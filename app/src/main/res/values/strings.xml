@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">PhotoEditor</string>
+    <string name="main_fragment_label">Main fragment</string>
+    <string name="feature_fragment_label">Feature fragment</string>
     <string name="btn_load">LOAD</string>
     <string name="btn_crop">CROP</string>
     <string name="btn_light">LIGHT</string>
