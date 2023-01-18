@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_mainFragment_to_featureFragment"
             app:destination="@id/featureFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_cropFragment"
+            app:destination="@id/cropFragment" />
     </fragment>
 
     <fragment
@@ -21,6 +24,16 @@
         tools:layout="@layout/fragment_feature">
         <argument
             android:name="feature"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cropFragment"
+        android:name="com.example.photoeditor.CropFragment"
+        android:label="@string/crop_fragment_label"
+        tools:layout="@layout/fragment_crop">
+        <argument
+            android:name="image"
             app:argType="string" />
     </fragment>
 
