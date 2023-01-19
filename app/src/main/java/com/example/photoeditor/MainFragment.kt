@@ -43,7 +43,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         with(binding) {
             btnLoad.setOnClickListener { openAndroidGallery() }
             btnCrop.setOnClickListener { initializeCropFragment(viewModel.image.value) }
-            btnLight.setOnClickListener { initializeFeatureFragment(btnLight.text.toString()) }
+            btnLight.setOnClickListener { initializeLightFragment(viewModel.image.value) }
             btnColor.setOnClickListener { initializeFeatureFragment(btnColor.text.toString()) }
             btnFilters.setOnClickListener { initializeFeatureFragment(btnFilters.text.toString()) }
         }
@@ -74,6 +74,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         findNavController().navigate(R.id.action_mainFragment_to_cropFragment, bundle)
     }
 
+    private fun initializeLightFragment(bitmap: Bitmap?) {
+        val bundle = Bundle().apply { putBitmap(lightImage, bitmap) }
+        findNavController().navigate(R.id.action_mainFragment_to_lightFragment, bundle)
+    }
+
     private fun getActivityResultRegister(): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when (result.resultCode) {
@@ -87,5 +92,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     companion object {
         const val featureName = "feature"
         const val cropImage = "image"
+        const val lightImage = "image"
     }
 }
