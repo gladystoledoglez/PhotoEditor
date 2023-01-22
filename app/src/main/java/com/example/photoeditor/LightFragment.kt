@@ -28,6 +28,7 @@ class LightFragment : Fragment() {
             seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(bar: SeekBar?, progress: Int, p2: Boolean) {
                     tvBrightness.text = getString(R.string.tv_brightness, progress)
+                    ivLight.colorFilter = viewModel.adjustBrightness(progress)
                 }
 
                 override fun onStartTrackingTouch(p0: SeekBar?) {
