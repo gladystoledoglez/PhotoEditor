@@ -25,20 +25,15 @@ class LightFragment : Fragment() {
         viewModel.changeImage(arguments?.getBitmap(MainFragment.lightImage))
         with(binding) {
             tvBrightness.text = getString(R.string.tv_brightness, 0)
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(bar: SeekBar?, progress: Int, p2: Boolean) {
-                    tvBrightness.text = getString(R.string.tv_brightness, progress)
-                    ivLight.colorFilter = viewModel.adjustBrightness(progress)
-                }
-
-                override fun onStartTrackingTouch(p0: SeekBar?) {
-                    // do nothing
-                }
-
-                override fun onStopTrackingTouch(p0: SeekBar?) {
-                    // do nothing
-                }
-            })
+            sbBrightness.setOnSeekBarProgressChanged { _, progress: Int, _ ->
+                tvBrightness.text = getString(R.string.tv_brightness, progress)
+                ivLight.colorFilter = viewModel.adjustBrightness(progress)
+            }
+            tvContrast.text = getString(R.string.tv_contrast, 0)
+            sbContrast.setOnSeekBarProgressChanged { _, progress: Int, _ ->
+                tvContrast.text = getString(R.string.tv_contrast, progress)
+                ivLight.colorFilter = viewModel.adjustContrast(progress)
+            }
         }
         with(viewModel) {
             image.observe(viewLifecycleOwner) { binding.ivLight.setImageBitmap(it) }
