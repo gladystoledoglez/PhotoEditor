@@ -4,6 +4,7 @@ import android.graphics.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.photoeditor.extensions.toHexScale
 
 class LightViewModel : ViewModel() {
 

@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.example.photoeditor.databinding.FragmentCropBinding
+import com.example.photoeditor.extensions.getBitmap
+import com.example.photoeditor.extensions.putBitmap
 
 class CropFragment : Fragment() {
     private lateinit var binding: FragmentCropBinding

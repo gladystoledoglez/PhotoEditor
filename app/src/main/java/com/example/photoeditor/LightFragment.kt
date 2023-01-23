@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.photoeditor.databinding.FragmentLightBinding
+import com.example.photoeditor.extensions.getBitmap
+import com.example.photoeditor.extensions.setOnSeekBarProgressChanged
 
 class LightFragment : Fragment() {
     private lateinit var binding: FragmentLightBinding

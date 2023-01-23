@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.extensions
 
 import android.widget.SeekBar
 import androidx.appcompat.widget.AppCompatSeekBar

@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.extensions
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

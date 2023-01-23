@@ -18,6 +18,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.photoeditor.databinding.FragmentMainBinding
+import com.example.photoeditor.extensions.getBitmap
+import com.example.photoeditor.extensions.navigate
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -70,13 +72,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun initializeCropFragment(bitmap: Bitmap?) {
-        val bundle = Bundle().apply { putBitmap(cropImage, bitmap) }
-        findNavController().navigate(R.id.action_mainFragment_to_cropFragment, bundle)
+        findNavController().navigate(R.id.action_mainFragment_to_cropFragment, cropImage, bitmap)
     }
 
     private fun initializeLightFragment(bitmap: Bitmap?) {
-        val bundle = Bundle().apply { putBitmap(lightImage, bitmap) }
-        findNavController().navigate(R.id.action_mainFragment_to_lightFragment, bundle)
+        findNavController().navigate(R.id.action_mainFragment_to_lightFragment, lightImage, bitmap)
     }
 
     private fun getActivityResultRegister(): ActivityResultLauncher<Intent> {
