@@ -18,6 +18,10 @@
         <action
             android:id="@+id/action_mainFragment_to_lightFragment"
             app:destination="@id/lightFragment" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_colorFragment"
+            app:destination="@id/colorFragment" />
     </fragment>
 
     <fragment
@@ -45,6 +49,16 @@
         android:name="com.example.photoeditor.LightFragment"
         android:label="@string/light_fragment_label"
         tools:layout="@layout/fragment_light">
+        <argument
+            android:name="image"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/colorFragment"
+        android:name="com.example.photoeditor.ColorFragment"
+        android:label="@string/color_fragment_label"
+        tools:layout="@layout/fragment_color">
         <argument
             android:name="image"
             app:argType="string" />

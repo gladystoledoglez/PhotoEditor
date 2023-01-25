@@ -4,6 +4,7 @@
     <string name="feature_fragment_label">Feature fragment</string>
     <string name="crop_fragment_label">Crop image</string>
     <string name="light_fragment_label">Adjust Light</string>
+    <string name="color_fragment_label">Adjust Color</string>
     <string name="btn_load">LOAD</string>
     <string name="btn_crop">CROP</string>
     <string name="btn_light">LIGHT</string>
@@ -16,4 +17,5 @@
     <string name="btn_rotate">Rotate</string>
     <string name="tv_brightness">Brightness: %1$d</string>
     <string name="tv_contrast">Contrast: %1$d</string>
+    <string name="tv_saturation">Saturation: %1$d</string>
 </resources>
