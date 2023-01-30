@@ -5,6 +5,7 @@
     <string name="crop_fragment_label">Crop image</string>
     <string name="light_fragment_label">Adjust Light</string>
     <string name="color_fragment_label">Adjust Color</string>
+    <string name="filter_fragment_label">Add Filter</string>
     <string name="btn_load">LOAD</string>
     <string name="btn_crop">CROP</string>
     <string name="btn_light">LIGHT</string>

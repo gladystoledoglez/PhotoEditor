@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainFragment_to_colorFragment"
             app:destination="@id/colorFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
 
     <fragment
@@ -59,6 +62,16 @@
         android:name="com.example.photoeditor.ColorFragment"
         android:label="@string/color_fragment_label"
         tools:layout="@layout/fragment_color">
+        <argument
+            android:name="image"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.example.photoeditor.FilterFragment"
+        android:label="@string/filter_fragment_label"
+        tools:layout="@layout/fragment_filter">
         <argument
             android:name="image"
             app:argType="string" />

@@ -47,7 +47,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             btnCrop.setOnClickListener { initializeCropFragment(viewModel.image.value) }
             btnLight.setOnClickListener { initializeLightFragment(viewModel.image.value) }
             btnColor.setOnClickListener { initializeColorFragment(viewModel.image.value) }
-            btnFilters.setOnClickListener { initializeFeatureFragment(btnFilters.text.toString()) }
+            btnFilters.setOnClickListener { initializeFilterFragment(viewModel.image.value) }
         }
         with(viewModel) {
             image.observe(viewLifecycleOwner) {
@@ -66,11 +66,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewModel.changeImage(bitmap)
     }
 
-    private fun initializeFeatureFragment(btnText: String) {
-        val bundle = Bundle().apply { putString(featureName, btnText) }
-        findNavController().navigate(R.id.action_mainFragment_to_featureFragment, bundle)
-    }
-
     private fun initializeCropFragment(bitmap: Bitmap?) {
         findNavController().navigate(R.id.action_mainFragment_to_cropFragment, cropImage, bitmap)
     }
@@ -81,6 +76,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun initializeColorFragment(bitmap: Bitmap?) {
         findNavController().navigate(R.id.action_mainFragment_to_colorFragment, colorImage, bitmap)
+    }
+
+    private fun initializeFilterFragment(bitmap: Bitmap?) {
+        findNavController().navigate(
+            R.id.action_mainFragment_to_filterFragment,
+            filterImage,
+            bitmap
+        )
     }
 
     private fun getActivityResultRegister(): ActivityResultLauncher<Intent> {
@@ -98,5 +101,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         const val cropImage = "image"
         const val lightImage = "image"
         const val colorImage = "image"
+        const val filterImage = "image"
     }
 }
