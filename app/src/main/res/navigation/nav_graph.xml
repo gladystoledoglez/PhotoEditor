@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_crop">
         <argument
             android:name="image"
-            app:argType="string" />
+            app:argType="android.os.Parcelable" />
     </fragment>
 
     <fragment
@@ -54,7 +54,7 @@
         tools:layout="@layout/fragment_light">
         <argument
             android:name="image"
-            app:argType="string" />
+            app:argType="android.os.Parcelable" />
     </fragment>
 
     <fragment
@@ -64,7 +64,7 @@
         tools:layout="@layout/fragment_color">
         <argument
             android:name="image"
-            app:argType="string" />
+            app:argType="android.os.Parcelable" />
     </fragment>
 
     <fragment
@@ -74,7 +74,7 @@
         tools:layout="@layout/fragment_filter">
         <argument
             android:name="image"
-            app:argType="string" />
+            app:argType="android.os.Parcelable" />
     </fragment>
 
 </navigation>

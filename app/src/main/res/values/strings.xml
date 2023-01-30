@@ -13,7 +13,8 @@
     <string name="btn_filters">FILTERS</string>
     <string name="todo">TODO</string>
     <string name="tv_crop">crop</string>
-    <string name="image_load_error">"Failure trying to load image from gallery"</string>
+    <string name="image_load_error">Failure trying to load image from gallery</string>
+    <string name="image_empty_message">You must select a photo first!</string>
     <string name="btn_save">Save</string>
     <string name="btn_rotate">Rotate</string>
     <string name="tv_brightness">Brightness: %1$d</string>

@@ -29,8 +29,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(cropImage) { _, bundle ->
-            viewModel.changeImage(bundle.getBitmap(cropImage))
+        setFragmentResultListener(CROP_IMAGE) { _, bundle ->
+            viewModel.changeImage(bundle.getBitmap(CROP_IMAGE))
         }
     }
 
@@ -67,21 +67,21 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun initializeCropFragment(bitmap: Bitmap?) {
-        findNavController().navigate(R.id.action_mainFragment_to_cropFragment, cropImage, bitmap)
+        findNavController().navigate(R.id.action_mainFragment_to_cropFragment, CROP_IMAGE, bitmap)
     }
 
     private fun initializeLightFragment(bitmap: Bitmap?) {
-        findNavController().navigate(R.id.action_mainFragment_to_lightFragment, lightImage, bitmap)
+        findNavController().navigate(R.id.action_mainFragment_to_lightFragment, LIGHT_IMAGE, bitmap)
     }
 
     private fun initializeColorFragment(bitmap: Bitmap?) {
-        findNavController().navigate(R.id.action_mainFragment_to_colorFragment, colorImage, bitmap)
+        findNavController().navigate(R.id.action_mainFragment_to_colorFragment, COLOR_IMAGE, bitmap)
     }
 
     private fun initializeFilterFragment(bitmap: Bitmap?) {
         findNavController().navigate(
             R.id.action_mainFragment_to_filterFragment,
-            filterImage,
+            FILTER_IMAGE,
             bitmap
         )
     }
@@ -97,10 +97,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     companion object {
-        const val featureName = "feature"
-        const val cropImage = "image"
-        const val lightImage = "image"
-        const val colorImage = "image"
-        const val filterImage = "image"
+        const val FEATURE_NAME = "feature"
+        const val CROP_IMAGE = "image"
+        const val LIGHT_IMAGE = "image"
+        const val COLOR_IMAGE = "image"
+        const val FILTER_IMAGE = "image"
     }
 }

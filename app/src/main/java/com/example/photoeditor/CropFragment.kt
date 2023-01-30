@@ -24,7 +24,7 @@ class CropFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.changeImage(arguments?.getBitmap(MainFragment.cropImage))
+        viewModel.changeImage(arguments?.getBitmap(MainFragment.CROP_IMAGE))
         with(viewModel) {
             image.observe(viewLifecycleOwner) { binding.cropImageView.setImageBitmap(it) }
         }
@@ -36,8 +36,8 @@ class CropFragment : Fragment() {
 
     private fun saveCroppedImage(bitmap: Bitmap?) {
         viewModel.changeImage(bitmap)
-        val bundle = Bundle().apply { putBitmap(MainFragment.cropImage, bitmap) }
-        setFragmentResult(MainFragment.cropImage, bundle)
+        val bundle = Bundle().apply { putBitmap(MainFragment.CROP_IMAGE, bitmap) }
+        setFragmentResult(MainFragment.CROP_IMAGE, bundle)
         activity?.onBackPressedDispatcher?.onBackPressed()
     }
 }

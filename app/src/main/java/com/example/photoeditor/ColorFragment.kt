@@ -23,7 +23,7 @@ class ColorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.changeImage(arguments?.getBitmap(MainFragment.colorImage))
+        viewModel.changeImage(arguments?.getBitmap(MainFragment.COLOR_IMAGE))
 
         with(binding) {
             tvSaturation.text = getString(R.string.tv_saturation, 0)

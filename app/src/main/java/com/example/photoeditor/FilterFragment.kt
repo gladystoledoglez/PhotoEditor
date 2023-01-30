@@ -24,7 +24,7 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.changeImage(arguments?.getBitmap(MainFragment.filterImage))
+        viewModel.changeImage(arguments?.getBitmap(MainFragment.FILTER_IMAGE))
         with(viewModel) {
             image.observe(viewLifecycleOwner) { binding.ivFilteredPhoto.setImageBitmap(it) }
             filters.observe(viewLifecycleOwner) { adapter.submitList(it) }

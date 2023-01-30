@@ -19,6 +19,6 @@ class FeatureFragment : Fragment(R.layout.fragment_feature) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.tvCrop.text = arguments?.getString(MainFragment.featureName)
+        binding.tvCrop.text = arguments?.getString(MainFragment.FEATURE_NAME)
     }
 }
