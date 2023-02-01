@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.photoeditor.presenter.adapters.FilterAdapter
 import com.example.photoeditor.databinding.FragmentFilterBinding
 import com.example.photoeditor.extensions.getBitmap
+import com.example.photoeditor.presenter.viewModels.FilterViewModel
 
 class FilterFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding

@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.domain.models
 
 import androidx.recyclerview.widget.DiffUtil
 

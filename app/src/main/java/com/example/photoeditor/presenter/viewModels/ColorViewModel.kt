@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.viewModels
 
 import android.graphics.Bitmap
 import android.graphics.ColorMatrix

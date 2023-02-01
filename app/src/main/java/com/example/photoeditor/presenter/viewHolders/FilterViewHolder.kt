@@ -1,8 +1,9 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.viewHolders
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.photoeditor.domain.models.Filter
 import com.example.photoeditor.databinding.ItemFilterBinding
 
 class FilterViewHolder(

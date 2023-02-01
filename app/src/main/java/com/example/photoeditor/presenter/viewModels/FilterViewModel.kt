@@ -1,9 +1,11 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.viewModels
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.photoeditor.domain.models.Filter
+import com.example.photoeditor.R
 
 class FilterViewModel : ViewModel() {
     private var _image: MutableLiveData<Bitmap?> = MutableLiveData()

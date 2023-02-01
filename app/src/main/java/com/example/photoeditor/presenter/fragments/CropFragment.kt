@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.fragments
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.example.photoeditor.databinding.FragmentCropBinding
 import com.example.photoeditor.extensions.getBitmap
 import com.example.photoeditor.extensions.putBitmap
+import com.example.photoeditor.presenter.viewModels.CropViewModel
 
 class CropFragment : Fragment() {
     private lateinit var binding: FragmentCropBinding

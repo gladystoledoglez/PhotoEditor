@@ -1,10 +1,11 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentFeatureBinding
 
 class FeatureFragment : Fragment(R.layout.fragment_feature) {

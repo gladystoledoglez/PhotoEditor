@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CropFragment">
+    tools:context=".presenter.fragments.CropFragment">
 
     <com.canhub.cropper.CropImageView
         android:id="@+id/cropImageView"

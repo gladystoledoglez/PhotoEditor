@@ -1,8 +1,9 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.example.photoeditor.domain.models.Filter
+import com.example.photoeditor.presenter.viewHolders.FilterViewHolder
 
 class FilterAdapter : ListAdapter<Filter, FilterViewHolder>(Filter.DIFF_UTIL_CALLBACK) {
 

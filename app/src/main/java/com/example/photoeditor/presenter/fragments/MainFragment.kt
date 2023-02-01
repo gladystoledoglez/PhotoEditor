@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.fragments
 
 import android.app.Activity
 import android.content.Intent
@@ -17,9 +17,11 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentMainBinding
 import com.example.photoeditor.extensions.getBitmap
 import com.example.photoeditor.extensions.navigate
+import com.example.photoeditor.presenter.viewModels.MainViewModel
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 

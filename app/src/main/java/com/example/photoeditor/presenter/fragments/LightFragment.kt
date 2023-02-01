@@ -1,4 +1,4 @@
-package com.example.photoeditor
+package com.example.photoeditor.presenter.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentLightBinding
 import com.example.photoeditor.extensions.getBitmap
 import com.example.photoeditor.extensions.setOnSeekBarProgressChanged
+import com.example.photoeditor.presenter.viewModels.LightViewModel
 
 class LightFragment : Fragment() {
     private lateinit var binding: FragmentLightBinding
