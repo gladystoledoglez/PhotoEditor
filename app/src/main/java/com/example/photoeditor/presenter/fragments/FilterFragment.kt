@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.photoeditor.presenter.adapters.FilterAdapter
+import com.example.photoeditor.domain.enums.FilterEnum
 import com.example.photoeditor.databinding.FragmentFilterBinding
+import com.example.photoeditor.domain.models.Filter
 import com.example.photoeditor.extensions.getBitmap
+import com.example.photoeditor.presenter.adapters.FilterAdapter
 import com.example.photoeditor.presenter.viewModels.FilterViewModel
 
 class FilterFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
     private val viewModel: FilterViewModel by viewModels()
-    private val adapter: FilterAdapter by lazy { FilterAdapter() }
+    private val adapter: FilterAdapter by lazy { FilterAdapter(::onClickListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -31,6 +33,16 @@ class FilterFragment : Fragment() {
             image.observe(viewLifecycleOwner) { binding.ivFilteredPhoto.setImageBitmap(it) }
             filters.observe(viewLifecycleOwner) { adapter.submitList(it) }
             getFilters()
+        }
+    }
+
+    private fun onClickListener(filter: Filter) {
+        with(binding.ivFilteredPhoto) {
+            when (filter.text) {
+                FilterEnum.SEPIA.name -> colorFilter = viewModel.setSepiaFilter()
+                FilterEnum.GRAYSCALE.name -> colorFilter = viewModel.setGrayScaleFilter()
+                FilterEnum.NEGATIVE.name -> colorFilter = viewModel.setNegativeFilter()
+            }
         }
     }
 }

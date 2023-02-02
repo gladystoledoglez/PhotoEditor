@@ -3,23 +3,26 @@ package com.example.photoeditor.presenter.viewHolders
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoeditor.domain.models.Filter
 import com.example.photoeditor.databinding.ItemFilterBinding
+import com.example.photoeditor.domain.models.Filter
 
 class FilterViewHolder(
-    private val binding: ItemFilterBinding
+    private val binding: ItemFilterBinding,
+    private val onClickListener: (item: Filter) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(filter: Filter) {
+    fun bind(item: Filter) {
         with(binding) {
-            tvFilter.text = filter.text
-            ivFilter.setImageResource(filter.image)
+            tvFilter.text = item.text
+            ivFilter.setImageResource(item.image)
+            root.setOnClickListener { onClickListener(item) }
         }
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup) = FilterViewHolder(
-            ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        fun newInstance(parent: ViewGroup, onClickListener: (item: Filter) -> Unit) = FilterViewHolder(
+            ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClickListener
         )
     }
 }

@@ -1,11 +1,13 @@
 package com.example.photoeditor.presenter.viewModels
 
 import android.graphics.Bitmap
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.photoeditor.domain.enums.FilterEnum
 import com.example.photoeditor.domain.models.Filter
-import com.example.photoeditor.R
 
 class FilterViewModel : ViewModel() {
     private var _image: MutableLiveData<Bitmap?> = MutableLiveData()
@@ -21,20 +23,41 @@ class FilterViewModel : ViewModel() {
     fun getFilters() {
         _filters.postValue(
             listOf(
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
-                Filter(image = R.drawable.android, text = "Natural"),
+                Filter(FilterEnum.SEPIA.res, FilterEnum.SEPIA.name),
+                Filter(FilterEnum.GRAYSCALE.res, FilterEnum.GRAYSCALE.name),
+                Filter(FilterEnum.NEGATIVE.res, FilterEnum.NEGATIVE.name)
             )
         )
+    }
+
+    fun setSepiaFilter(): ColorMatrixColorFilter {
+        val firstColorMatrix = ColorMatrix()
+        val secondColorMatrix = ColorMatrix()
+        firstColorMatrix.setSaturation(0f)
+        secondColorMatrix.setScale(1f, .95f, .82f, 1.0f)
+        firstColorMatrix.setConcat(secondColorMatrix, firstColorMatrix)
+
+        return ColorMatrixColorFilter(firstColorMatrix)
+    }
+
+    fun setGrayScaleFilter(): ColorMatrixColorFilter {
+        val matrix = ColorMatrix()
+        matrix.setSaturation(0f)
+
+        return ColorMatrixColorFilter(matrix)
+    }
+
+    fun setNegativeFilter(): ColorMatrixColorFilter {
+        val lessOne = -1f
+        val zero = 0f
+        val one = 1f
+        val brightness = 255f
+        val matrix = floatArrayOf(
+            lessOne, zero, zero, zero, brightness,
+            zero, lessOne, zero, zero, brightness,
+            zero, zero, lessOne, zero, brightness,
+            zero, zero, zero, one, zero
+        )
+        return ColorMatrixColorFilter(ColorMatrix(matrix))
     }
 }
