@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.photoeditor.domain.enums.FilterEnum
 import com.example.photoeditor.databinding.FragmentFilterBinding
+import com.example.photoeditor.domain.enums.FilterEnum
 import com.example.photoeditor.domain.models.Filter
 import com.example.photoeditor.extensions.getBitmap
 import com.example.photoeditor.presenter.adapters.FilterAdapter
@@ -39,9 +39,11 @@ class FilterFragment : Fragment() {
     private fun onClickListener(filter: Filter) {
         with(binding.ivFilteredPhoto) {
             when (filter.text) {
-                FilterEnum.SEPIA.name -> colorFilter = viewModel.setSepiaFilter()
-                FilterEnum.GRAYSCALE.name -> colorFilter = viewModel.setGrayScaleFilter()
-                FilterEnum.NEGATIVE.name -> colorFilter = viewModel.setNegativeFilter()
+                FilterEnum.SEPIA.name -> colorFilter = viewModel.getSepiaFilter()
+                FilterEnum.GRAYSCALE.name -> colorFilter = viewModel.getGrayScaleFilter()
+                FilterEnum.NEGATIVE.name -> colorFilter = viewModel.getNegativeFilter()
+                FilterEnum.CYAN.name -> colorFilter = viewModel.getCyanFilter()
+                FilterEnum.GRAIN.name -> colorFilter = viewModel.getGrainFilter()
             }
         }
     }

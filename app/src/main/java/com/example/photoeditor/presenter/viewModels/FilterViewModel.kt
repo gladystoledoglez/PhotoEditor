@@ -16,6 +16,10 @@ class FilterViewModel : ViewModel() {
     private var _filters: MutableLiveData<List<Filter>> = MutableLiveData()
     val filters: LiveData<List<Filter>> = _filters
 
+    init {
+        System.loadLibrary("photoeditor")
+    }
+
     fun changeImage(image: Bitmap?) {
         _image.postValue(image)
     }
@@ -25,12 +29,14 @@ class FilterViewModel : ViewModel() {
             listOf(
                 Filter(FilterEnum.SEPIA.res, FilterEnum.SEPIA.name),
                 Filter(FilterEnum.GRAYSCALE.res, FilterEnum.GRAYSCALE.name),
-                Filter(FilterEnum.NEGATIVE.res, FilterEnum.NEGATIVE.name)
+                Filter(FilterEnum.NEGATIVE.res, FilterEnum.NEGATIVE.name),
+                Filter(FilterEnum.CYAN.res, FilterEnum.CYAN.name),
+                Filter(FilterEnum.GRAIN.res, FilterEnum.GRAIN.name)
             )
         )
     }
 
-    fun setSepiaFilter(): ColorMatrixColorFilter {
+    fun getSepiaFilter(): ColorMatrixColorFilter {
         val firstColorMatrix = ColorMatrix()
         val secondColorMatrix = ColorMatrix()
         firstColorMatrix.setSaturation(0f)
@@ -40,14 +46,14 @@ class FilterViewModel : ViewModel() {
         return ColorMatrixColorFilter(firstColorMatrix)
     }
 
-    fun setGrayScaleFilter(): ColorMatrixColorFilter {
+    fun getGrayScaleFilter(): ColorMatrixColorFilter {
         val matrix = ColorMatrix()
         matrix.setSaturation(0f)
 
         return ColorMatrixColorFilter(matrix)
     }
 
-    fun setNegativeFilter(): ColorMatrixColorFilter {
+    fun getNegativeFilter(): ColorMatrixColorFilter {
         val lessOne = -1f
         val zero = 0f
         val one = 1f
@@ -60,4 +66,8 @@ class FilterViewModel : ViewModel() {
         )
         return ColorMatrixColorFilter(ColorMatrix(matrix))
     }
+
+    external fun getCyanFilter(): ColorMatrixColorFilter
+
+    external fun getGrainFilter(): ColorMatrixColorFilter
 }
