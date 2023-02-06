@@ -1,11 +1,13 @@
 package com.example.photoeditor
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.photoeditor.databinding.ActivityMainBinding
+import com.example.photoeditor.extensions.hideAllMenuItems
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,4 +28,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp() || super.onSupportNavigateUp()
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        menu?.hideAllMenuItems()
+        return super.onCreateOptionsMenu(menu)
+    }
 }

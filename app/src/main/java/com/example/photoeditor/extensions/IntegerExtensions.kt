@@ -18,3 +18,10 @@ fun Int.toHexScale() = arrayOf(
     "E0", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "EA", "EB", "EC", "ED", "EE", "EF",
     "F0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "FA", "FB", "FC", "FD", "FE", "FF"
 )[this]
+
+fun Int.toValue(): Float {
+    val two = 2
+    val limit = 100f
+    val halfLimit = 50
+    return (this.toFloat() + halfLimit) * two / limit
+}

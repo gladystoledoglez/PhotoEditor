@@ -6,6 +6,7 @@ import android.graphics.ColorMatrixColorFilter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.photoeditor.extensions.toValue
 
 class ColorViewModel : ViewModel() {
 
@@ -19,14 +20,13 @@ class ColorViewModel : ViewModel() {
     fun adjustSaturation(progress: Int): ColorMatrixColorFilter {
         val zero = 0f
         val one = 1f
-        val oneHundred = 100f
         val matrix = floatArrayOf(
             one, zero, zero, zero, one,
             zero, one, zero, zero, one,
             zero, zero, one, zero, one,
             zero, zero, zero, one, zero
         )
-        val saturation = progress.toFloat() / oneHundred
+        val saturation = progress.toValue()
         val colorMatrix = ColorMatrix(matrix).apply { setSaturation(saturation) }
         return ColorMatrixColorFilter(colorMatrix)
     }

@@ -39,7 +39,7 @@
             android:id="@+id/sbBrightness"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="255"
+            android:max="100"
             android:min="0"
             android:paddingHorizontal="16dp" />
 
@@ -56,8 +56,8 @@
             android:id="@+id/sbContrast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="255"
-            android:min="0"
+            android:max="50"
+            android:min="-50"
             android:paddingHorizontal="16dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

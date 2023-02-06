@@ -1,18 +1,17 @@
 package com.example.photoeditor.presenter.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.*
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.viewModels
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentColorBinding
 import com.example.photoeditor.extensions.getBitmap
 import com.example.photoeditor.extensions.setOnSeekBarProgressChanged
+import com.example.photoeditor.extensions.showMenuItem
 import com.example.photoeditor.presenter.viewModels.ColorViewModel
 
-class ColorFragment : Fragment() {
+class ColorFragment : BaseFragment() {
     private lateinit var binding: FragmentColorBinding
     private val viewModel: ColorViewModel by viewModels()
 
@@ -25,6 +24,7 @@ class ColorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel.changeImage(arguments?.getBitmap(MainFragment.COLOR_IMAGE))
 
         with(binding) {
@@ -38,5 +38,25 @@ class ColorFragment : Fragment() {
                 image.observe(viewLifecycleOwner) { binding.ivColor.setImageBitmap(it) }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.showMenuItem(R.id.actionSave)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.actionSave -> {
+            binding.ivColor.drawToBitmap().apply {
+                viewModel.changeImage(image = this)
+                saveImage(TAG, bitmap = this)
+            }
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        val TAG = ColorFragment::class.simpleName.orEmpty()
     }
 }

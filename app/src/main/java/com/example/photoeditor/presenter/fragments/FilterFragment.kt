@@ -1,19 +1,19 @@
 package com.example.photoeditor.presenter.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.*
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.viewModels
+import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentFilterBinding
 import com.example.photoeditor.domain.enums.FilterEnum
 import com.example.photoeditor.domain.models.Filter
 import com.example.photoeditor.extensions.getBitmap
+import com.example.photoeditor.extensions.showMenuItem
 import com.example.photoeditor.presenter.adapters.FilterAdapter
 import com.example.photoeditor.presenter.viewModels.FilterViewModel
 
-class FilterFragment : Fragment() {
+class FilterFragment : BaseFragment() {
     private lateinit var binding: FragmentFilterBinding
     private val viewModel: FilterViewModel by viewModels()
     private val adapter: FilterAdapter by lazy { FilterAdapter(::onClickListener) }
@@ -28,6 +28,7 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel.changeImage(arguments?.getBitmap(MainFragment.FILTER_IMAGE))
         with(viewModel) {
             image.observe(viewLifecycleOwner) { binding.ivFilteredPhoto.setImageBitmap(it) }
@@ -46,5 +47,25 @@ class FilterFragment : Fragment() {
                 FilterEnum.GRAIN.name -> colorFilter = viewModel.getGrainFilter()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.showMenuItem(R.id.actionSave)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.actionSave -> {
+            binding.ivFilteredPhoto.drawToBitmap().apply {
+                viewModel.changeImage(image = this)
+                saveImage(TAG, bitmap = this)
+            }
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        val TAG = FilterFragment::class.simpleName.orEmpty()
     }
 }

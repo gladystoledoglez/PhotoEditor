@@ -1,19 +1,15 @@
 package com.example.photoeditor.presenter.fragments
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
+import android.view.*
 import androidx.fragment.app.viewModels
+import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentCropBinding
 import com.example.photoeditor.extensions.getBitmap
-import com.example.photoeditor.extensions.putBitmap
+import com.example.photoeditor.extensions.showAllMenuItems
 import com.example.photoeditor.presenter.viewModels.CropViewModel
 
-class CropFragment : Fragment() {
+class CropFragment : BaseFragment() {
     private lateinit var binding: FragmentCropBinding
     private val viewModel: CropViewModel by viewModels()
 
@@ -25,20 +21,35 @@ class CropFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel.changeImage(arguments?.getBitmap(MainFragment.CROP_IMAGE))
         with(viewModel) {
             image.observe(viewLifecycleOwner) { binding.cropImageView.setImageBitmap(it) }
         }
-        with(binding) {
-            btnRotate.setOnClickListener { cropImageView.rotateImage(degrees = 90) }
-            btnSave.setOnClickListener { saveCroppedImage(cropImageView.getCroppedImage()) }
-        }
     }
 
-    private fun saveCroppedImage(bitmap: Bitmap?) {
-        viewModel.changeImage(bitmap)
-        val bundle = Bundle().apply { putBitmap(MainFragment.CROP_IMAGE, bitmap) }
-        setFragmentResult(MainFragment.CROP_IMAGE, bundle)
-        activity?.onBackPressedDispatcher?.onBackPressed()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.showAllMenuItems()
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.actionRotate -> {
+            binding.cropImageView.rotateImage(degrees = 90)
+            true
+        }
+        R.id.actionSave -> {
+            binding.cropImageView.getCroppedImage().apply {
+                viewModel.changeImage(image = this)
+                saveImage(TAG, bitmap = this)
+            }
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        val TAG = CropFragment::class.simpleName.orEmpty()
     }
 }

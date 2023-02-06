@@ -31,8 +31,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(CROP_IMAGE) { _, bundle ->
-            viewModel.changeImage(bundle.getBitmap(CROP_IMAGE))
+        setFragmentResultListener(CropFragment.TAG) { _, bundle ->
+            viewModel.changeImage(bundle.getBitmap(CropFragment.TAG))
+        }
+        setFragmentResultListener(LightFragment.TAG) { _, bundle ->
+            viewModel.changeImage(bundle.getBitmap(LightFragment.TAG))
+        }
+        setFragmentResultListener(ColorFragment.TAG) { _, bundle ->
+            viewModel.changeImage(bundle.getBitmap(ColorFragment.TAG))
+        }
+        setFragmentResultListener(FilterFragment.TAG) { _, bundle ->
+            viewModel.changeImage(bundle.getBitmap(FilterFragment.TAG))
         }
     }
 

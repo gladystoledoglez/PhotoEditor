@@ -8,9 +8,10 @@
 
     <ImageView
         android:id="@+id/ivFilteredPhoto"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/todo"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/rvFilters"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

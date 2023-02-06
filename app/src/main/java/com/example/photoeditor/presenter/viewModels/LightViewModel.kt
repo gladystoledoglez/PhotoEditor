@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.photoeditor.extensions.toHexScale
+import com.example.photoeditor.extensions.toValue
 
 class LightViewModel : ViewModel() {
 
@@ -29,8 +30,7 @@ class LightViewModel : ViewModel() {
     fun adjustContrast(progress: Int, brightness: Float = 1f): ColorMatrixColorFilter {
         val zero = 0f
         val one = 1f
-        val oneHundred = 100f
-        val contrast = progress.toFloat() / oneHundred
+        val contrast = progress.toValue()
         val matrix = floatArrayOf(
             contrast, zero, zero, zero, brightness,
             zero, contrast, zero, zero, brightness,
