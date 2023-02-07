@@ -52,7 +52,7 @@ class LightFragment : BaseFragment() {
         R.id.actionSave -> {
             binding.ivLight.drawToBitmap().apply {
                 viewModel.changeImage(image = this)
-                saveImage(TAG, bitmap = this)
+                sendImageFrom(TAG, image = this)
             }
             true
         }

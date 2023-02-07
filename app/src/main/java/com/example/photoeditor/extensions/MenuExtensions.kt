@@ -4,7 +4,7 @@ import android.view.Menu
 import androidx.core.view.children
 import androidx.core.view.iterator
 
-fun Menu.showMenuItems(isVisible: Boolean) {
+private fun Menu.showMenuItems(isVisible: Boolean) {
     iterator().forEach { it.isVisible = isVisible }
 }
 
@@ -18,4 +18,8 @@ fun Menu.showAllMenuItems() {
 
 fun Menu.showMenuItem(menuItemId: Int) {
     children.find { it.itemId == menuItemId }?.isVisible = true
+}
+
+fun Menu.showMenuItems(menuItemsIds: IntArray) {
+    menuItemsIds.forEach { showMenuItem(it) }
 }

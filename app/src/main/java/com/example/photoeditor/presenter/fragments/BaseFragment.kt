@@ -8,8 +8,8 @@ import com.example.photoeditor.extensions.putBitmap
 
 abstract class BaseFragment : Fragment() {
 
-    protected fun saveImage(origin: String, bitmap: Bitmap?) {
-        val bundle = Bundle().apply { putBitmap(origin, bitmap) }
+    protected fun sendImageFrom(origin: String, image: Bitmap?) {
+        val bundle = Bundle().apply { putBitmap(origin, image) }
         setFragmentResult(origin, bundle)
         activity?.onBackPressedDispatcher?.onBackPressed()
     }

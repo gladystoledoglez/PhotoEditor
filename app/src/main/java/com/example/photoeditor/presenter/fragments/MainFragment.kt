@@ -1,17 +1,19 @@
 package com.example.photoeditor.presenter.fragments
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -21,6 +23,8 @@ import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentMainBinding
 import com.example.photoeditor.extensions.getBitmap
 import com.example.photoeditor.extensions.navigate
+import com.example.photoeditor.extensions.saveToFile
+import com.example.photoeditor.extensions.showMenuItems
 import com.example.photoeditor.presenter.viewModels.MainViewModel
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -28,6 +32,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by viewModels()
     private val resultLauncher = getActivityResultRegister()
+    private val permissionLauncher = getActivityRequestPermission()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +58,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+        permissionSetup()
         with(binding) {
-            btnLoad.setOnClickListener { openAndroidGallery() }
             btnCrop.setOnClickListener { initializeCropFragment(viewModel.image.value) }
             btnLight.setOnClickListener { initializeLightFragment(viewModel.image.value) }
             btnColor.setOnClickListener { initializeColorFragment(viewModel.image.value) }
@@ -65,6 +72,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 Glide.with(this@MainFragment).load(it).into(binding.ivGalleryPhoto)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.showMenuItems(intArrayOf(R.id.actionLoad, R.id.actionSave))
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.actionLoad -> {
+            openAndroidGallery()
+            true
+        }
+        R.id.actionSave -> {
+            viewModel.image.value.saveToFile(context)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun openAndroidGallery() {
@@ -107,11 +131,31 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
+    private fun getActivityRequestPermission(): ActivityResultLauncher<String> {
+        return registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Log.d(TAG, getString(R.string.permission_granted_message))
+            } else {
+                Log.d(TAG, getString(R.string.permission_request_message))
+            }
+        }
+    }
+
+    private fun permissionSetup() {
+        val permission = ContextCompat.checkSelfPermission(requireContext(), WRITE_EXTERNAL_STORAGE)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            permissionLauncher.launch(WRITE_EXTERNAL_STORAGE)
+        } else {
+            Log.d(TAG, getString(R.string.permission_granted_message))
+        }
+    }
+
     companion object {
         const val FEATURE_NAME = "feature"
         const val CROP_IMAGE = "image"
         const val LIGHT_IMAGE = "image"
         const val COLOR_IMAGE = "image"
         const val FILTER_IMAGE = "image"
+        val TAG = MainFragment::class.simpleName
     }
 }

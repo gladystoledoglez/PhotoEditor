@@ -5,8 +5,7 @@ import android.view.*
 import androidx.fragment.app.viewModels
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentCropBinding
-import com.example.photoeditor.extensions.getBitmap
-import com.example.photoeditor.extensions.showAllMenuItems
+import com.example.photoeditor.extensions.*
 import com.example.photoeditor.presenter.viewModels.CropViewModel
 
 class CropFragment : BaseFragment() {
@@ -30,7 +29,7 @@ class CropFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.showAllMenuItems()
+        menu.showMenuItems(intArrayOf(R.id.actionRotate, R.id.actionSave))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -42,7 +41,7 @@ class CropFragment : BaseFragment() {
         R.id.actionSave -> {
             binding.cropImageView.getCroppedImage().apply {
                 viewModel.changeImage(image = this)
-                saveImage(TAG, bitmap = this)
+                sendImageFrom(TAG, image = this)
             }
             true
         }
