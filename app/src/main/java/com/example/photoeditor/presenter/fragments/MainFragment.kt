@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -21,10 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.FragmentMainBinding
-import com.example.photoeditor.extensions.getBitmap
-import com.example.photoeditor.extensions.navigate
-import com.example.photoeditor.extensions.saveToFile
-import com.example.photoeditor.extensions.showMenuItems
+import com.example.photoeditor.extensions.*
 import com.example.photoeditor.presenter.viewModels.MainViewModel
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -37,15 +35,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(CropFragment.TAG) { _, bundle ->
+            viewModel.changeFileName(CropFragment.TAG)
             viewModel.changeImage(bundle.getBitmap(CropFragment.TAG))
         }
         setFragmentResultListener(LightFragment.TAG) { _, bundle ->
+            viewModel.changeFileName(LightFragment.TAG)
             viewModel.changeImage(bundle.getBitmap(LightFragment.TAG))
         }
         setFragmentResultListener(ColorFragment.TAG) { _, bundle ->
+            viewModel.changeFileName(ColorFragment.TAG)
             viewModel.changeImage(bundle.getBitmap(ColorFragment.TAG))
         }
         setFragmentResultListener(FilterFragment.TAG) { _, bundle ->
+            viewModel.changeFileName(FilterFragment.TAG)
             viewModel.changeImage(bundle.getBitmap(FilterFragment.TAG))
         }
     }
@@ -75,7 +77,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.showMenuItems(intArrayOf(R.id.actionLoad, R.id.actionSave))
+        menu.showMenuItems(intArrayOf(R.id.actionLoad, R.id.actionSave, R.id.actionShare))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -85,7 +87,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             true
         }
         R.id.actionSave -> {
-            viewModel.image.value.saveToFile(context)
+            viewModel.apply {
+                val imageResString = image.value.saveFile(fileName.value.orEmpty())
+                Toast.makeText(context, imageResString, Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+        R.id.actionShare -> {
+            viewModel.apply {
+                val imageFileName = fileName.value.orEmpty()
+                image.value.saveFile(imageFileName)
+                shareImage(imageFileName)
+            }
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -98,6 +111,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun loadImage(imageUri: Uri?) {
         val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, imageUri)
+        viewModel.changeFileName(TAG)
         viewModel.changeImage(bitmap)
     }
 
@@ -148,6 +162,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         } else {
             Log.d(TAG, getString(R.string.permission_granted_message))
         }
+    }
+
+    private fun shareImage(fileName: String) {
+        val file = fileName.toFile()
+        val uri = FileProvider.getUriForFile(requireContext(), String.FILE_AUTHORITY, file)
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = String.PNG_MIME_TYPE
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        val shareChooserTitle = getString(R.string.choose_share_option_message)
+        startActivity(Intent.createChooser(shareIntent, shareChooserTitle))
     }
 
     companion object {

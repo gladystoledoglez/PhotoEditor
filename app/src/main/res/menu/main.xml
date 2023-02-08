@@ -18,4 +18,10 @@
         android:icon="@drawable/ic_save"
         android:title="@string/btn_save"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/actionShare"
+        android:icon="@drawable/ic_share"
+        android:title="@string/btn_share"
+        app:showAsAction="ifRoom" />
 </menu>

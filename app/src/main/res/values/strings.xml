@@ -19,7 +19,9 @@
     <string name="image_save_error">There was a problem to save the image</string>
     <string name="permission_granted_message">Permission is Granted</string>
     <string name="permission_request_message">You must accept requested permissions</string>
+    <string name="choose_share_option_message">Choose option to share</string>
     <string name="btn_save">Save</string>
+    <string name="btn_share">Share</string>
     <string name="btn_rotate">Rotate</string>
     <string name="tv_brightness">Brightness: %1$d</string>
     <string name="tv_contrast">Contrast: %1$d</string>
