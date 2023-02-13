@@ -1,7 +1,5 @@
 package com.example.photoeditor.extensions
 
-import android.os.Build
-import android.os.Environment
 import com.example.photoeditor.BuildConfig
 import java.io.File
 
@@ -15,13 +13,7 @@ val String.Companion.FILE_PROVIDER: String get() = ".provider"
 
 val String.Companion.FILE_AUTHORITY: String get() = "${BuildConfig.APPLICATION_ID}$FILE_PROVIDER"
 
-fun String.toFile(): File {
-
-    val parentDir = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-    } else {
-        File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES)
-    }
+fun String.toFileFrom(parentDir: File?): File {
 
     val filesDir = File(parentDir, String.EMPTY)
 

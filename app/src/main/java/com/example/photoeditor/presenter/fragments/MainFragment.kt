@@ -1,20 +1,15 @@
 package com.example.photoeditor.presenter.fragments
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -30,7 +25,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by viewModels()
     private val resultLauncher = getActivityResultRegister()
-    private val permissionLauncher = getActivityRequestPermission()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +56,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        permissionSetup()
         with(binding) {
             btnCrop.setOnClickListener { initializeCropFragment(viewModel.image.value) }
             btnLight.setOnClickListener { initializeLightFragment(viewModel.image.value) }
@@ -77,7 +70,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.showMenuItems(intArrayOf(R.id.actionLoad, R.id.actionSave, R.id.actionShare))
+        menu.showMenuItem(R.id.actionLoad)
+        viewModel.image.value?.let {
+            menu.showMenuItems(R.id.actionSave, R.id.actionShare)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -88,16 +84,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
         R.id.actionSave -> {
             viewModel.apply {
-                val imageResString = image.value.saveFile(fileName.value.orEmpty())
+                val imageResString = image.value.saveFile(fileName.value, context?.filesDir)
                 Toast.makeText(context, imageResString, Toast.LENGTH_SHORT).show()
             }
             true
         }
         R.id.actionShare -> {
             viewModel.apply {
-                val imageFileName = fileName.value.orEmpty()
-                image.value.saveFile(imageFileName)
-                shareImage(imageFileName)
+                image.value.saveFile(fileName.value, context?.filesDir)
+                shareImage(fileName.value)
             }
             true
         }
@@ -145,28 +140,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
-    private fun getActivityRequestPermission(): ActivityResultLauncher<String> {
-        return registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                Log.d(TAG, getString(R.string.permission_granted_message))
-            } else {
-                Log.d(TAG, getString(R.string.permission_request_message))
-            }
-        }
-    }
-
-    private fun permissionSetup() {
-        val permission = ContextCompat.checkSelfPermission(requireContext(), WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            permissionLauncher.launch(WRITE_EXTERNAL_STORAGE)
-        } else {
-            Log.d(TAG, getString(R.string.permission_granted_message))
-        }
-    }
-
-    private fun shareImage(fileName: String) {
-        val file = fileName.toFile()
-        val uri = FileProvider.getUriForFile(requireContext(), String.FILE_AUTHORITY, file)
+    private fun shareImage(fileName: String?) {
+        val file = fileName?.toFileFrom(context?.filesDir)
+        val uri = context?.getUriFromFile(file)
         val shareIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             type = String.PNG_MIME_TYPE

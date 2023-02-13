@@ -20,6 +20,6 @@ fun Menu.showMenuItem(menuItemId: Int) {
     children.find { it.itemId == menuItemId }?.isVisible = true
 }
 
-fun Menu.showMenuItems(menuItemsIds: IntArray) {
+fun Menu.showMenuItems(vararg menuItemsIds: Int) {
     menuItemsIds.forEach { showMenuItem(it) }
 }

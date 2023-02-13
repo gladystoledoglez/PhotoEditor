@@ -29,7 +29,7 @@ class CropFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.showMenuItems(intArrayOf(R.id.actionRotate, R.id.actionSave))
+        menu.showMenuItems(R.id.actionRotate, R.id.actionSave)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

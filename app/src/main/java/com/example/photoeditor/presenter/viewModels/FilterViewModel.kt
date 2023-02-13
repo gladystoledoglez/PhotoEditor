@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.photoeditor.domain.enums.FilterEnum
 import com.example.photoeditor.domain.models.Filter
+import com.example.photoeditor.ml.LiteModelCartoonganFp161
+import org.tensorflow.lite.support.image.TensorImage
 
 class FilterViewModel : ViewModel() {
     private var _image: MutableLiveData<Bitmap?> = MutableLiveData()
@@ -31,7 +33,8 @@ class FilterViewModel : ViewModel() {
                 Filter(FilterEnum.GRAYSCALE.res, FilterEnum.GRAYSCALE.name),
                 Filter(FilterEnum.NEGATIVE.res, FilterEnum.NEGATIVE.name),
                 Filter(FilterEnum.CYAN.res, FilterEnum.CYAN.name),
-                Filter(FilterEnum.GRAIN.res, FilterEnum.GRAIN.name)
+                Filter(FilterEnum.GRAIN.res, FilterEnum.GRAIN.name),
+                Filter(FilterEnum.CARTOONED.res, FilterEnum.CARTOONED.name)
             )
         )
     }
@@ -70,4 +73,10 @@ class FilterViewModel : ViewModel() {
     external fun getCyanFilter(): ColorMatrixColorFilter
 
     external fun getGrainFilter(): ColorMatrixColorFilter
+
+    fun getCartoonedImage(model: LiteModelCartoonganFp161?): Bitmap? {
+        val processedBitmap = model?.process(TensorImage.fromBitmap(_image.value))
+        val cartoonedImage = processedBitmap?.cartoonizedImageAsTensorImage
+        return cartoonedImage?.bitmap
+    }
 }
