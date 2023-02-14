@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">PhotoEditor</string>
-    <string name="main_fragment_label">Main fragment</string>
+    <string name="app_name">Photo Editor</string>
+    <string name="main_fragment_label">Photo Editor</string>
     <string name="feature_fragment_label">Feature fragment</string>
-    <string name="crop_fragment_label">Crop image</string>
+    <string name="crop_fragment_label">Crop Image</string>
     <string name="light_fragment_label">Adjust Light</string>
     <string name="color_fragment_label">Adjust Color</string>
     <string name="filter_fragment_label">Add Filter</string>

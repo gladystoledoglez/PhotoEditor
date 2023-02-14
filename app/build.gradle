@@ -3,9 +3,21 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(new File(rootProject.projectDir, "local.properties")))
+
 android {
     namespace 'com.example.photoeditor'
     compileSdk 33
+
+    signingConfigs {
+        release {
+            storeFile file("${rootProject.projectDir.getAbsolutePath()}/${localProperties['storeFileName']}")
+            storePassword localProperties["storePassword"]
+            keyAlias localProperties["keyAlias"]
+            keyPassword localProperties["keyPassword"]
+        }
+    }
 
     defaultConfig {
         applicationId "com.example.photoeditor"
@@ -24,8 +36,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
         }
     }
     compileOptions {
