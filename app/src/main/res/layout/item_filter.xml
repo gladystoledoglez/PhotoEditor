@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/android" />
+        tools:srcCompat="@drawable/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/tvFilter"
@@ -24,5 +24,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivFilter"
-        tools:text="Natural"/>
+        tools:text="Natural" />
 </androidx.constraintlayout.widget.ConstraintLayout>

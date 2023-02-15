@@ -7,7 +7,7 @@ jobject applyFilter(JNIEnv *env, jfloatArray matrix, jfloat filter[20]);
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_photoeditor_presenter_viewModels_FilterViewModel_getCyanFilter(JNIEnv *env,
+Java_com_gladystoledoglez_photoeditor_presenter_viewModels_FilterViewModel_getCyanFilter(JNIEnv *env,
                                                                                 jobject thiz) {
     jfloatArray cyanoMatrix = env->NewFloatArray(20);
     jfloat cyanoFilter[20] = {
@@ -21,7 +21,7 @@ Java_com_example_photoeditor_presenter_viewModels_FilterViewModel_getCyanFilter(
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_photoeditor_presenter_viewModels_FilterViewModel_getGrainFilter(JNIEnv *env,
+Java_com_gladystoledoglez_photoeditor_presenter_viewModels_FilterViewModel_getGrainFilter(JNIEnv *env,
                                                                                  jobject thiz) {
 
     jfloatArray grainMatrix = env->NewFloatArray(20);

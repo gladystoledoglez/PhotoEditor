@@ -7,7 +7,7 @@ def localProperties = new Properties()
 localProperties.load(new FileInputStream(new File(rootProject.projectDir, "local.properties")))
 
 android {
-    namespace 'com.example.photoeditor'
+    namespace 'com.gladystoledoglez.photoeditor'
     compileSdk 33
 
     signingConfigs {
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.photoeditor"
+        applicationId "com.gladystoledoglez.photoeditor"
         minSdk 21
         targetSdk 33
         versionCode 1

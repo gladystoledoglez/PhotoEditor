@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.photoeditor.presenter.fragments.MainFragment"
+        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.MainFragment"
         android:label="@string/main_fragment_label">
         <action
             android:id="@+id/action_mainFragment_to_featureFragment"
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/featureFragment"
-        android:name="com.example.photoeditor.presenter.fragments.FeatureFragment"
+        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.FeatureFragment"
         android:label="@string/feature_fragment_label"
         tools:layout="@layout/fragment_feature">
         <argument
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/cropFragment"
-        android:name="com.example.photoeditor.presenter.fragments.CropFragment"
+        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.CropFragment"
         android:label="@string/crop_fragment_label"
         tools:layout="@layout/fragment_crop">
         <argument
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/lightFragment"
-        android:name="com.example.photoeditor.presenter.fragments.LightFragment"
+        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.LightFragment"
         android:label="@string/light_fragment_label"
         tools:layout="@layout/fragment_light">
         <argument
@@ -59,7 +59,7 @@
 
     <fragment
         android:id="@+id/colorFragment"
-        android:name="com.example.photoeditor.presenter.fragments.ColorFragment"
+        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.ColorFragment"
         android:label="@string/color_fragment_label"
         tools:layout="@layout/fragment_color">
         <argument
@@ -69,7 +69,7 @@
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="com.example.photoeditor.presenter.fragments.FilterFragment"
+        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.FilterFragment"
         android:label="@string/filter_fragment_label"
         tools:layout="@layout/fragment_filter">
         <argument
