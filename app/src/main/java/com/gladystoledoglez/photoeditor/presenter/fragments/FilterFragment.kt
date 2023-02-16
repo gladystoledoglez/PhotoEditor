@@ -4,21 +4,23 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.drawToBitmap
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.photoeditor.domain.enums.FilterEnum
 import com.gladystoledoglez.photoeditor.R
 import com.gladystoledoglez.photoeditor.databinding.FragmentFilterBinding
 import com.gladystoledoglez.photoeditor.domain.models.Filter
 import com.gladystoledoglez.photoeditor.extensions.getBitmap
+import com.gladystoledoglez.photoeditor.extensions.orFalse
 import com.gladystoledoglez.photoeditor.extensions.showMenuItem
-import com.gladystoledoglez.photoeditor.extensions.toLiteModelCartoonganFp161
+import com.gladystoledoglez.photoeditor.extensions.toLiteModelCartoonedFp161
 import com.gladystoledoglez.photoeditor.ml.LiteModelCartoonganFp161
 import com.gladystoledoglez.photoeditor.presenter.adapters.FilterAdapter
 import com.gladystoledoglez.photoeditor.presenter.viewModels.FilterViewModel
 
 class FilterFragment : BaseFragment() {
     private lateinit var binding: FragmentFilterBinding
-    private var model: LiteModelCartoonganFp161? = null
+    private var cartoonedModel: LiteModelCartoonganFp161? = null
     private val viewModel: FilterViewModel by viewModels()
     private val adapter: FilterAdapter by lazy { FilterAdapter(::onClickListener) }
 
@@ -33,14 +35,15 @@ class FilterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         binding.rvFilters.adapter = adapter
-        model = context?.toLiteModelCartoonganFp161()
+        cartoonedModel = context?.toLiteModelCartoonedFp161()
         val bitmap = arguments?.getBitmap(MainFragment.FILTER_IMAGE)
         with(viewModel) {
             image.observe(viewLifecycleOwner) {
                 setFilteredPhoto(it)
-                loadFilters(resources)
+                loadFilters(cartoonedModel, resources)
             }
             cartoonedImage.observe(viewLifecycleOwner) { setFilteredPhoto(it) }
+            isProcessing.observe(viewLifecycleOwner) { setProcessing(it.orFalse()) }
             filters.observe(viewLifecycleOwner) { adapter.submitList(it) }
             changeImage(bitmap)
         }
@@ -63,8 +66,8 @@ class FilterFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
+        cartoonedModel?.close()
         super.onDestroy()
-        model?.close()
     }
 
     private fun onClickListener(filter: Filter) {
@@ -77,13 +80,28 @@ class FilterFragment : BaseFragment() {
                 FilterEnum.NEGATIVE.name -> colorFilter = viewModel.getNegativeFilter()
                 FilterEnum.CYAN.name -> colorFilter = viewModel.getCyanFilter()
                 FilterEnum.GRAIN.name -> colorFilter = viewModel.getGrainFilter()
-                FilterEnum.CARTOONED.name -> viewModel.setCartoonedImage(model)
+                FilterEnum.CARTOONED.name -> viewModel.setCartoonedImage(cartoonedModel)
             }
         }
     }
 
     private fun setFilteredPhoto(bitmap: Bitmap?) {
         binding.ivFilteredPhoto.setImageBitmap(bitmap)
+    }
+
+    private fun setProcessing(isProcessing: Boolean) {
+        with(binding) {
+            ivFilteredPhoto.alpha = if (isProcessing) 0.1F else 1.0F
+            pbProcessing.isVisible = isProcessing
+            if (isProcessing.not()) {
+                restartCartoonedModel()
+            }
+        }
+    }
+
+    private fun restartCartoonedModel() {
+        cartoonedModel?.close()
+        cartoonedModel = context?.toLiteModelCartoonedFp161()
     }
 
     companion object {

@@ -4,20 +4,18 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import androidx.core.content.res.ResourcesCompat
+import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.photoeditor.domain.enums.FilterEnum
-import com.gladystoledoglez.photoeditor.R
 import com.gladystoledoglez.photoeditor.domain.models.Filter
 import com.gladystoledoglez.photoeditor.extensions.toFilterDrawable
 import com.gladystoledoglez.photoeditor.ml.LiteModelCartoonganFp161
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.image.TensorImage
 
@@ -28,12 +26,38 @@ class FilterViewModel : ViewModel() {
     private var _cartoonedImage: MutableLiveData<Bitmap?> = MutableLiveData()
     val cartoonedImage: LiveData<Bitmap?> = _cartoonedImage
 
+    private var _isProcessing: MutableLiveData<Boolean?> = MutableLiveData(false)
+    val isProcessing: LiveData<Boolean?> = _isProcessing
+
     private var _filters: MutableLiveData<List<Filter>> = MutableLiveData()
     val filters: LiveData<List<Filter>> = _filters
 
     init {
         System.loadLibrary("photoeditor")
     }
+
+    private suspend fun getCartoonedBitmapFrom(cartoonedModel: LiteModelCartoonganFp161?): Bitmap? {
+        return flowOf(cartoonedModel?.process(TensorImage.fromBitmap(_image.value)))
+            .flowOn(Dispatchers.IO)
+            .onStart { _isProcessing.postValue(true) }
+            .onCompletion { _isProcessing.postValue(false) }
+            .map { it?.cartoonizedImageAsTensorImage?.bitmap }
+            .firstOrNull()
+    }
+
+    private suspend fun getFilterDrawableBy(
+        cartoonedModel: LiteModelCartoonganFp161?,
+        res: Resources,
+        ordinal: Int
+    ): Drawable? =
+        when (ordinal) {
+            FilterEnum.SEPIA.ordinal -> _image.value.toFilterDrawable(res, getSepiaFilter())
+            FilterEnum.GRAYSCALE.ordinal -> _image.value.toFilterDrawable(res, getGrayScaleFilter())
+            FilterEnum.NEGATIVE.ordinal -> _image.value.toFilterDrawable(res, getNegativeFilter())
+            FilterEnum.CYAN.ordinal -> _image.value.toFilterDrawable(res, getCyanFilter())
+            FilterEnum.GRAIN.ordinal -> _image.value.toFilterDrawable(res, getGrainFilter())
+            else -> getCartoonedBitmapFrom(cartoonedModel)?.toDrawable(res)
+        }
 
     fun changeImage(image: Bitmap?) {
         _image.postValue(image)
@@ -43,28 +67,13 @@ class FilterViewModel : ViewModel() {
         _image.postValue(image.value)
     }
 
-    fun loadFilters(resources: Resources) {
-
-        val bitmap = _image.value
-        val sepiaDrawable = bitmap.toFilterDrawable(resources, getSepiaFilter())
-        val grayScaleDrawable = bitmap.toFilterDrawable(resources, getGrayScaleFilter())
-        val negativeDrawable = bitmap.toFilterDrawable(resources, getNegativeFilter())
-        val cyanDrawable = bitmap.toFilterDrawable(resources, getCyanFilter())
-        val grainDrawable = bitmap.toFilterDrawable(resources, getGrainFilter())
-        val cartoonedDrawable = resources.let {
-            ResourcesCompat.getDrawable(it, R.drawable.cartooned_image, it.newTheme())
+    fun loadFilters(cartoonedModel: LiteModelCartoonganFp161?, resources: Resources) {
+        viewModelScope.launch {
+            val filters = FilterEnum.values().map {
+                Filter(it.name, getFilterDrawableBy(cartoonedModel, resources, it.ordinal))
+            }
+            _filters.postValue(filters)
         }
-
-        _filters.postValue(
-            listOf(
-                Filter(sepiaDrawable, FilterEnum.SEPIA.name),
-                Filter(grayScaleDrawable, FilterEnum.GRAYSCALE.name),
-                Filter(negativeDrawable, FilterEnum.NEGATIVE.name),
-                Filter(cyanDrawable, FilterEnum.CYAN.name),
-                Filter(grainDrawable, FilterEnum.GRAIN.name),
-                Filter(cartoonedDrawable, FilterEnum.CARTOONED.name)
-            )
-        )
     }
 
     fun getSepiaFilter(): ColorMatrixColorFilter {
@@ -102,12 +111,7 @@ class FilterViewModel : ViewModel() {
 
     external fun getGrainFilter(): ColorMatrixColorFilter
 
-    fun setCartoonedImage(model: LiteModelCartoonganFp161?) {
-        viewModelScope.launch {
-            flowOf(model?.process(TensorImage.fromBitmap(_image.value)))
-                .flowOn(Dispatchers.IO)
-                .map { it?.cartoonizedImageAsTensorImage?.bitmap }
-                .collect { _cartoonedImage.postValue(it) }
-        }
+    fun setCartoonedImage(cartoonedModel: LiteModelCartoonganFp161?) {
+        viewModelScope.launch { _cartoonedImage.postValue(getCartoonedBitmapFrom(cartoonedModel)) }
     }
 }

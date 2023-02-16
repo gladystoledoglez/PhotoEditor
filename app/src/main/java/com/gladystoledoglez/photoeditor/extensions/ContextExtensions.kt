@@ -7,7 +7,7 @@ import com.gladystoledoglez.photoeditor.ml.LiteModelCartoonganFp161
 import org.tensorflow.lite.support.model.Model
 import java.io.File
 
-fun Context.toLiteModelCartoonganFp161(): LiteModelCartoonganFp161 {
+fun Context.toLiteModelCartoonedFp161(): LiteModelCartoonganFp161 {
     return LiteModelCartoonganFp161.newInstance(this, Model.Options.Builder().buildOptions())
 }
 
