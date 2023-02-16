@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -65,6 +66,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         with(viewModel) {
             image.observe(viewLifecycleOwner) {
                 Glide.with(this@MainFragment).load(it).into(binding.ivGalleryPhoto)
+                binding.apply {
+                    ivGalleryPhoto.isVisible = true
+                    tvLoadImage.isVisible = false
+                }
             }
         }
     }

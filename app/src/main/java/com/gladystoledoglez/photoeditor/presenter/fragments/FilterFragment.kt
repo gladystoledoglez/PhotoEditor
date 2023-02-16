@@ -6,7 +6,7 @@ import android.view.*
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.example.photoeditor.domain.enums.FilterEnum
+import com.gladystoledoglez.photoeditor.domain.enums.FilterEnum
 import com.gladystoledoglez.photoeditor.R
 import com.gladystoledoglez.photoeditor.databinding.FragmentFilterBinding
 import com.gladystoledoglez.photoeditor.domain.models.Filter

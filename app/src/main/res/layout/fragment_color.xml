@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/tv_saturation"
+            android:textColor="@color/purple_400"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -42,7 +43,9 @@
             android:layout_marginBottom="16dp"
             android:max="50"
             android:min="-50"
-            android:paddingHorizontal="16dp" />
+            android:paddingHorizontal="16dp"
+            android:progressTint="@color/purple_400"
+            android:thumbTint="@color/purple_400" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

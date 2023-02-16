@@ -2,6 +2,7 @@
     <string name="app_name">Photo Editor</string>
     <string name="main_fragment_label">Photo Editor</string>
     <string name="feature_fragment_label">Feature fragment</string>
+    <string name="tv_load_image">Upload an image from your gallery</string>
     <string name="crop_fragment_label">Crop Image</string>
     <string name="light_fragment_label">Adjust Light</string>
     <string name="color_fragment_label">Adjust Color</string>

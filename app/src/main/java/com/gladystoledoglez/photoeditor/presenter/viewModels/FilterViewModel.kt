@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.photoeditor.domain.enums.FilterEnum
+import com.gladystoledoglez.photoeditor.domain.enums.FilterEnum
 import com.gladystoledoglez.photoeditor.domain.models.Filter
 import com.gladystoledoglez.photoeditor.extensions.toFilterDrawable
 import com.gladystoledoglez.photoeditor.ml.LiteModelCartoonganFp161

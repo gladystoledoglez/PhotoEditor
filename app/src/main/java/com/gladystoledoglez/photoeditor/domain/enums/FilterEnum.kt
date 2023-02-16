@@ -1,4 +1,4 @@
-package com.example.photoeditor.domain.enums
+package com.gladystoledoglez.photoeditor.domain.enums
 
 enum class FilterEnum {
     SEPIA,
