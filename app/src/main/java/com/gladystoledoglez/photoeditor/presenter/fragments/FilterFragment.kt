@@ -6,10 +6,10 @@ import android.view.*
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.gladystoledoglez.photoeditor.domain.enums.FilterEnum
+import com.gladystoledoglez.photoeditor.domain.enums.Filters
 import com.gladystoledoglez.photoeditor.R
 import com.gladystoledoglez.photoeditor.databinding.FragmentFilterBinding
-import com.gladystoledoglez.photoeditor.domain.models.Filter
+import com.gladystoledoglez.photoeditor.domain.models.FilterModel
 import com.gladystoledoglez.photoeditor.extensions.getBitmap
 import com.gladystoledoglez.photoeditor.extensions.orFalse
 import com.gladystoledoglez.photoeditor.extensions.showMenuItem
@@ -70,17 +70,17 @@ class FilterFragment : BaseFragment() {
         super.onDestroy()
     }
 
-    private fun onClickListener(filter: Filter) {
+    private fun onClickListener(filter: FilterModel) {
         viewModel.restoreImage()
         with(binding.ivFilteredPhoto) {
             clearColorFilter()
             when (filter.text) {
-                FilterEnum.SEPIA.name -> colorFilter = viewModel.getSepiaFilter()
-                FilterEnum.GRAYSCALE.name -> colorFilter = viewModel.getGrayScaleFilter()
-                FilterEnum.NEGATIVE.name -> colorFilter = viewModel.getNegativeFilter()
-                FilterEnum.CYAN.name -> colorFilter = viewModel.getCyanFilter()
-                FilterEnum.GRAIN.name -> colorFilter = viewModel.getGrainFilter()
-                FilterEnum.CARTOONED.name -> viewModel.setCartoonedImage(cartoonedModel)
+                Filters.SEPIA.name -> colorFilter = viewModel.getSepiaFilter()
+                Filters.GRAYSCALE.name -> colorFilter = viewModel.getGrayScaleFilter()
+                Filters.NEGATIVE.name -> colorFilter = viewModel.getNegativeFilter()
+                Filters.CYAN.name -> colorFilter = viewModel.getCyanFilter()
+                Filters.GRAIN.name -> colorFilter = viewModel.getGrainFilter()
+                Filters.CARTOONED.name -> viewModel.setCartoonedImage(cartoonedModel)
             }
         }
     }

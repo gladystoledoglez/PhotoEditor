@@ -18,8 +18,10 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.gladystoledoglez.photoeditor.R
 import com.gladystoledoglez.photoeditor.databinding.FragmentMainBinding
+import com.gladystoledoglez.photoeditor.domain.enums.Tabs
 import com.gladystoledoglez.photoeditor.extensions.*
 import com.gladystoledoglez.photoeditor.presenter.viewModels.MainViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -57,21 +59,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        with(binding) {
-            btnCrop.setOnClickListener { initializeCropFragment(viewModel.image.value) }
-            btnLight.setOnClickListener { initializeLightFragment(viewModel.image.value) }
-            btnColor.setOnClickListener { initializeColorFragment(viewModel.image.value) }
-            btnFilters.setOnClickListener { initializeFilterFragment(viewModel.image.value) }
-        }
-        with(viewModel) {
-            image.observe(viewLifecycleOwner) {
-                Glide.with(this@MainFragment).load(it).into(binding.ivGalleryPhoto)
-                binding.apply {
-                    ivGalleryPhoto.isVisible = true
-                    tvLoadImage.isVisible = false
-                }
-            }
-        }
+        setupFooter()
+        setupObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -113,6 +102,33 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, imageUri)
         viewModel.changeFileName(TAG)
         viewModel.changeImage(bitmap)
+    }
+
+    private fun setupFooter() {
+        with(binding.tlFooter) {
+            Tabs.values().map { addTab(newTab().apply { text = it.name }) }
+            addOnTabSelectedListener(onTabSelectedListener {
+                when (it?.position) {
+                    Tabs.CROP.ordinal -> initializeCropFragment(viewModel.image.value)
+                    Tabs.LIGHT.ordinal -> initializeLightFragment(viewModel.image.value)
+                    Tabs.COLOR.ordinal -> initializeColorFragment(viewModel.image.value)
+                    Tabs.FILTERS.ordinal -> initializeFilterFragment(viewModel.image.value)
+                    else -> Unit
+                }
+            })
+        }
+    }
+
+    private fun setupObservers() {
+        with(viewModel) {
+            image.observe(viewLifecycleOwner) {
+                Glide.with(this@MainFragment).load(it).into(binding.ivGalleryPhoto)
+                binding.apply {
+                    ivGalleryPhoto.isVisible = true
+                    tvLoadImage.isVisible = false
+                }
+            }
+        }
     }
 
     private fun initializeCropFragment(bitmap: Bitmap?) {

@@ -1,6 +1,6 @@
 package com.gladystoledoglez.photoeditor.domain.enums
 
-enum class FilterEnum {
+enum class Filters {
     SEPIA,
     GRAYSCALE,
     NEGATIVE,

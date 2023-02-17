@@ -8,10 +8,6 @@
     <string name="color_fragment_label">Adjust Color</string>
     <string name="filter_fragment_label">Add Filter</string>
     <string name="btn_load">LOAD</string>
-    <string name="btn_crop">CROP</string>
-    <string name="btn_light">LIGHT</string>
-    <string name="btn_color">COLOR</string>
-    <string name="btn_filters">FILTERS</string>
     <string name="todo">TODO</string>
     <string name="tv_crop">crop</string>
     <string name="image_load_error">Failure trying to load image from gallery</string>

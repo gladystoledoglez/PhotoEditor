@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gladystoledoglez.photoeditor.databinding.ItemFilterBinding
-import com.gladystoledoglez.photoeditor.domain.models.Filter
+import com.gladystoledoglez.photoeditor.domain.models.FilterModel
 
 class FilterViewHolder(
     private val binding: ItemFilterBinding,
-    private val onClickListener: (item: Filter) -> Unit
+    private val onClickListener: (item: FilterModel) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Filter) {
+    fun bind(item: FilterModel) {
         with(binding) {
             tvFilter.text = item.text
             ivFilter.setImageDrawable(item.drawable)
@@ -20,7 +20,7 @@ class FilterViewHolder(
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup, onClickListener: (item: Filter) -> Unit) =
+        fun newInstance(parent: ViewGroup, onClickListener: (item: FilterModel) -> Unit) =
             FilterViewHolder(
                 ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 onClickListener

@@ -10,8 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gladystoledoglez.photoeditor.domain.enums.FilterEnum
-import com.gladystoledoglez.photoeditor.domain.models.Filter
+import com.gladystoledoglez.photoeditor.domain.enums.Filters
+import com.gladystoledoglez.photoeditor.domain.models.FilterModel
 import com.gladystoledoglez.photoeditor.extensions.toFilterDrawable
 import com.gladystoledoglez.photoeditor.ml.LiteModelCartoonganFp161
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +29,8 @@ class FilterViewModel : ViewModel() {
     private var _isProcessing: MutableLiveData<Boolean?> = MutableLiveData(false)
     val isProcessing: LiveData<Boolean?> = _isProcessing
 
-    private var _filters: MutableLiveData<List<Filter>> = MutableLiveData()
-    val filters: LiveData<List<Filter>> = _filters
+    private var _filters: MutableLiveData<List<FilterModel>> = MutableLiveData()
+    val filters: LiveData<List<FilterModel>> = _filters
 
     init {
         System.loadLibrary("photoeditor")
@@ -51,11 +51,11 @@ class FilterViewModel : ViewModel() {
         ordinal: Int
     ): Drawable? =
         when (ordinal) {
-            FilterEnum.SEPIA.ordinal -> _image.value.toFilterDrawable(res, getSepiaFilter())
-            FilterEnum.GRAYSCALE.ordinal -> _image.value.toFilterDrawable(res, getGrayScaleFilter())
-            FilterEnum.NEGATIVE.ordinal -> _image.value.toFilterDrawable(res, getNegativeFilter())
-            FilterEnum.CYAN.ordinal -> _image.value.toFilterDrawable(res, getCyanFilter())
-            FilterEnum.GRAIN.ordinal -> _image.value.toFilterDrawable(res, getGrainFilter())
+            Filters.SEPIA.ordinal -> _image.value.toFilterDrawable(res, getSepiaFilter())
+            Filters.GRAYSCALE.ordinal -> _image.value.toFilterDrawable(res, getGrayScaleFilter())
+            Filters.NEGATIVE.ordinal -> _image.value.toFilterDrawable(res, getNegativeFilter())
+            Filters.CYAN.ordinal -> _image.value.toFilterDrawable(res, getCyanFilter())
+            Filters.GRAIN.ordinal -> _image.value.toFilterDrawable(res, getGrainFilter())
             else -> getCartoonedBitmapFrom(cartoonedModel)?.toDrawable(res)
         }
 
@@ -69,8 +69,8 @@ class FilterViewModel : ViewModel() {
 
     fun loadFilters(cartoonedModel: LiteModelCartoonganFp161?, resources: Resources) {
         viewModelScope.launch {
-            val filters = FilterEnum.values().map {
-                Filter(it.name, getFilterDrawableBy(cartoonedModel, resources, it.ordinal))
+            val filters = Filters.values().map {
+                FilterModel(it.name, getFilterDrawableBy(cartoonedModel, resources, it.ordinal))
             }
             _filters.postValue(filters)
         }

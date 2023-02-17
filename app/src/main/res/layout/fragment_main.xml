@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/tv_load_image"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/btnColor"
+        app:layout_constraintBottom_toTopOf="@id/tlFooter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,64 +25,18 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/todo"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/btnColor"
+        app:layout_constraintBottom_toTopOf="@+id/tlFooter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <Button
-        android:id="@+id/btnCrop"
-        android:layout_width="wrap_content"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tlFooter"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:text="@string/btn_crop"
-        android:textColor="@color/purple_400"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnLight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:text="@string/btn_light"
-        android:textColor="@color/purple_400"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnCrop" />
-
-    <Button
-        android:id="@+id/btnColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:text="@string/btn_color"
-        android:textColor="@color/purple_400"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnLight" />
-
-    <Button
-        android:id="@+id/btnFilters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:text="@string/btn_filters"
-        android:textColor="@color/purple_400"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnColor" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
