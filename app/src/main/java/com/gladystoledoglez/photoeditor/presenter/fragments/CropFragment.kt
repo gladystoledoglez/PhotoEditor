@@ -22,7 +22,7 @@ class CropFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel.changeImage(arguments?.getBitmap(MainFragment.CROP_IMAGE))
+        viewModel.changeImage(arguments?.getBitmap(MainFragment.IMAGE))
         with(viewModel) {
             image.observe(viewLifecycleOwner) { binding.cropImageView.setImageBitmap(it) }
         }

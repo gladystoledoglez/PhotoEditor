@@ -25,7 +25,7 @@ class ColorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel.changeImage(arguments?.getBitmap(MainFragment.COLOR_IMAGE))
+        viewModel.changeImage(arguments?.getBitmap(MainFragment.IMAGE))
 
         with(binding) {
             tvSaturation.text = getString(R.string.tv_saturation, 0)

@@ -10,9 +10,6 @@
         android:name="com.gladystoledoglez.photoeditor.presenter.fragments.MainFragment"
         android:label="@string/main_fragment_label">
         <action
-            android:id="@+id/action_mainFragment_to_featureFragment"
-            app:destination="@id/featureFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_cropFragment"
             app:destination="@id/cropFragment" />
         <action
@@ -25,16 +22,6 @@
         <action
             android:id="@+id/action_mainFragment_to_filterFragment"
             app:destination="@id/filterFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/featureFragment"
-        android:name="com.gladystoledoglez.photoeditor.presenter.fragments.FeatureFragment"
-        android:label="@string/feature_fragment_label"
-        tools:layout="@layout/fragment_feature">
-        <argument
-            android:name="feature"
-            app:argType="string" />
     </fragment>
 
     <fragment

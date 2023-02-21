@@ -21,7 +21,6 @@ import com.gladystoledoglez.photoeditor.databinding.FragmentMainBinding
 import com.gladystoledoglez.photoeditor.domain.enums.Tabs
 import com.gladystoledoglez.photoeditor.extensions.*
 import com.gladystoledoglez.photoeditor.presenter.viewModels.MainViewModel
-import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -31,22 +30,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(CropFragment.TAG) { _, bundle ->
-            viewModel.changeFileName(CropFragment.TAG)
-            viewModel.changeImage(bundle.getBitmap(CropFragment.TAG))
-        }
-        setFragmentResultListener(LightFragment.TAG) { _, bundle ->
-            viewModel.changeFileName(LightFragment.TAG)
-            viewModel.changeImage(bundle.getBitmap(LightFragment.TAG))
-        }
-        setFragmentResultListener(ColorFragment.TAG) { _, bundle ->
-            viewModel.changeFileName(ColorFragment.TAG)
-            viewModel.changeImage(bundle.getBitmap(ColorFragment.TAG))
-        }
-        setFragmentResultListener(FilterFragment.TAG) { _, bundle ->
-            viewModel.changeFileName(FilterFragment.TAG)
-            viewModel.changeImage(bundle.getBitmap(FilterFragment.TAG))
-        }
+        setFragmentResultListener(CropFragment.TAG) { key, bundle -> handleResult(key, bundle) }
+        setFragmentResultListener(LightFragment.TAG) { key, bundle -> handleResult(key, bundle) }
+        setFragmentResultListener(ColorFragment.TAG) { key, bundle -> handleResult(key, bundle) }
+        setFragmentResultListener(FilterFragment.TAG) { key, bundle -> handleResult(key, bundle) }
     }
 
     override fun onCreateView(
@@ -100,21 +87,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun loadImage(imageUri: Uri?) {
         val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, imageUri)
-        viewModel.changeFileName(TAG)
-        viewModel.changeImage(bitmap)
+        changeFileBitmap(TAG, bitmap)
     }
 
     private fun setupFooter() {
         with(binding.tlFooter) {
             Tabs.values().map { addTab(newTab().apply { text = it.name }) }
             addOnTabSelectedListener(onTabSelectedListener {
-                when (it?.position) {
-                    Tabs.CROP.ordinal -> initializeCropFragment(viewModel.image.value)
-                    Tabs.LIGHT.ordinal -> initializeLightFragment(viewModel.image.value)
-                    Tabs.COLOR.ordinal -> initializeColorFragment(viewModel.image.value)
-                    Tabs.FILTERS.ordinal -> initializeFilterFragment(viewModel.image.value)
-                    else -> Unit
-                }
+                findNavController().navigate(it.getFragmentId(), IMAGE, viewModel.image.value)
             })
         }
     }
@@ -129,26 +109,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
             }
         }
-    }
-
-    private fun initializeCropFragment(bitmap: Bitmap?) {
-        findNavController().navigate(R.id.action_mainFragment_to_cropFragment, CROP_IMAGE, bitmap)
-    }
-
-    private fun initializeLightFragment(bitmap: Bitmap?) {
-        findNavController().navigate(R.id.action_mainFragment_to_lightFragment, LIGHT_IMAGE, bitmap)
-    }
-
-    private fun initializeColorFragment(bitmap: Bitmap?) {
-        findNavController().navigate(R.id.action_mainFragment_to_colorFragment, COLOR_IMAGE, bitmap)
-    }
-
-    private fun initializeFilterFragment(bitmap: Bitmap?) {
-        findNavController().navigate(
-            R.id.action_mainFragment_to_filterFragment,
-            FILTER_IMAGE,
-            bitmap
-        )
     }
 
     private fun getActivityResultRegister(): ActivityResultLauncher<Intent> {
@@ -174,12 +134,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         startActivity(Intent.createChooser(shareIntent, shareChooserTitle))
     }
 
+    private fun handleResult(key: String, bundle: Bundle) {
+        changeFileBitmap(key, bundle.getBitmap(key))
+    }
+
+    private fun changeFileBitmap(fileName: String?, bitmap: Bitmap?) {
+        viewModel.changeFileName(fileName)
+        viewModel.changeImage(bitmap)
+    }
+
     companion object {
-        const val FEATURE_NAME = "feature"
-        const val CROP_IMAGE = "image"
-        const val LIGHT_IMAGE = "image"
-        const val COLOR_IMAGE = "image"
-        const val FILTER_IMAGE = "image"
+        const val IMAGE = "image"
         val TAG = MainFragment::class.simpleName
     }
 }

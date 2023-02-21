@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.gladystoledoglez.photoeditor.domain.enums.Filters
 import com.gladystoledoglez.photoeditor.domain.models.FilterModel
 import com.gladystoledoglez.photoeditor.extensions.toFilterDrawable
+import com.gladystoledoglez.photoeditor.extensions.toScale
 import com.gladystoledoglez.photoeditor.ml.LiteModelCartoonganFp161
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -22,6 +23,7 @@ import org.tensorflow.lite.support.image.TensorImage
 class FilterViewModel : ViewModel() {
     private var _image: MutableLiveData<Bitmap?> = MutableLiveData()
     val image: LiveData<Bitmap?> = _image
+    val bitmap: Bitmap? get() = _image.value
 
     private var _cartoonedImage: MutableLiveData<Bitmap?> = MutableLiveData()
     val cartoonedImage: LiveData<Bitmap?> = _cartoonedImage
@@ -36,28 +38,27 @@ class FilterViewModel : ViewModel() {
         System.loadLibrary("photoeditor")
     }
 
-    private suspend fun getCartoonedBitmapFrom(cartoonedModel: LiteModelCartoonganFp161?): Bitmap? {
-        return flowOf(cartoonedModel?.process(TensorImage.fromBitmap(_image.value)))
-            .flowOn(Dispatchers.IO)
-            .onStart { _isProcessing.postValue(true) }
-            .onCompletion { _isProcessing.postValue(false) }
-            .map { it?.cartoonizedImageAsTensorImage?.bitmap }
-            .firstOrNull()
-    }
+    private suspend fun getCartoonedBitmap(
+        cartoonedModel: LiteModelCartoonganFp161?, bitmap: Bitmap?
+    ) = flow { emit(cartoonedModel?.process(TensorImage.fromBitmap(bitmap))) }
+        .flowOn(Dispatchers.IO)
+        .onStart { _isProcessing.postValue(true) }
+        .onCompletion { _isProcessing.postValue(false) }
+        .map { it?.cartoonizedImageAsTensorImage?.toScale(bitmap?.width, bitmap?.height) }
+        .firstOrNull()
 
     private suspend fun getFilterDrawableBy(
-        cartoonedModel: LiteModelCartoonganFp161?,
-        res: Resources,
-        ordinal: Int
-    ): Drawable? =
-        when (ordinal) {
-            Filters.SEPIA.ordinal -> _image.value.toFilterDrawable(res, getSepiaFilter())
-            Filters.GRAYSCALE.ordinal -> _image.value.toFilterDrawable(res, getGrayScaleFilter())
-            Filters.NEGATIVE.ordinal -> _image.value.toFilterDrawable(res, getNegativeFilter())
-            Filters.CYAN.ordinal -> _image.value.toFilterDrawable(res, getCyanFilter())
-            Filters.GRAIN.ordinal -> _image.value.toFilterDrawable(res, getGrainFilter())
-            else -> getCartoonedBitmapFrom(cartoonedModel)?.toDrawable(res)
+        cartoonedModel: LiteModelCartoonganFp161?, res: Resources, ordinal: Int
+    ): Drawable? {
+        return when (ordinal) {
+            Filters.SEPIA.ordinal -> bitmap.toFilterDrawable(res, getSepiaFilter())
+            Filters.GRAYSCALE.ordinal -> bitmap.toFilterDrawable(res, getGrayScaleFilter())
+            Filters.NEGATIVE.ordinal -> bitmap.toFilterDrawable(res, getNegativeFilter())
+            Filters.CYAN.ordinal -> bitmap.toFilterDrawable(res, getCyanFilter())
+            Filters.GRAIN.ordinal -> bitmap.toFilterDrawable(res, getGrainFilter())
+            else -> getCartoonedBitmap(cartoonedModel, bitmap)?.toDrawable(res)
         }
+    }
 
     fun changeImage(image: Bitmap?) {
         _image.postValue(image)
@@ -70,7 +71,8 @@ class FilterViewModel : ViewModel() {
     fun loadFilters(cartoonedModel: LiteModelCartoonganFp161?, resources: Resources) {
         viewModelScope.launch {
             val filters = Filters.values().map {
-                FilterModel(it.name, getFilterDrawableBy(cartoonedModel, resources, it.ordinal))
+                val drawable = getFilterDrawableBy(cartoonedModel, resources, it.ordinal)
+                FilterModel(it.name, drawable)
             }
             _filters.postValue(filters)
         }
@@ -112,6 +114,8 @@ class FilterViewModel : ViewModel() {
     external fun getGrainFilter(): ColorMatrixColorFilter
 
     fun setCartoonedImage(cartoonedModel: LiteModelCartoonganFp161?) {
-        viewModelScope.launch { _cartoonedImage.postValue(getCartoonedBitmapFrom(cartoonedModel)) }
+        viewModelScope.launch {
+            _cartoonedImage.postValue(getCartoonedBitmap(cartoonedModel, bitmap))
+        }
     }
 }

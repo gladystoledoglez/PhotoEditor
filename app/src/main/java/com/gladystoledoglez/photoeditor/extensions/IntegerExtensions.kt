@@ -2,6 +2,10 @@ package com.gladystoledoglez.photoeditor.extensions
 
 val Int.Companion.PNG_HIGH_QUALITY: Int get() = 100
 
+val Int.Companion.ZERO: Int get() = 0
+
+fun Int?.orZero() = this ?: Int.ZERO
+
 fun Int.toHexScale() = arrayOf(
     "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "0A", "0B", "0C", "0D", "0E", "0F",
     "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "1A", "1B", "1C", "1D", "1E", "1F",

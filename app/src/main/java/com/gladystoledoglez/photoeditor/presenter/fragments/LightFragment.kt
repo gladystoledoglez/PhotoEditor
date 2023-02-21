@@ -25,7 +25,7 @@ class LightFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel.changeImage(arguments?.getBitmap(MainFragment.LIGHT_IMAGE))
+        viewModel.changeImage(arguments?.getBitmap(MainFragment.IMAGE))
         with(binding) {
             tvBrightness.text = getString(R.string.tv_brightness, 0)
             sbBrightness.setOnSeekBarProgressChanged { _, progress: Int, _ ->
